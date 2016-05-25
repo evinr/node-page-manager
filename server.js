@@ -7,6 +7,9 @@ var bodyParser = require('body-parser');
 var exec = require('child_process').exec;
 var dive = require('dive');
 
+var listValues = [];
+var baseDir = '/apps/'; // this is the folder where the pages/apps live that are being managed
+
 //Configuring middleware
 expressapp.use(bodyParser())
 
@@ -16,37 +19,21 @@ expressapp.use(express.static('public'));
 //Maps the assets request to the resources/js file
 expressapp.use('/mock', express.static(__dirname + '/mock-responses'));
 
-
-
-
-
-//Dynamic file system management
-expressapp.get('/list', function(req, res) { //returns a list of app pages
-res.setHeader('Content-Type', 'application/json');
-var baseDir = '/apps/';
-var childrenFolders = ['asdf'];
-res.send(JSON.stringify(childrenFolders))
-var divePromise = function() {
-    return new Promise(function(resolve, reject) {
-        dive(process.cwd() + baseDir, { recursive: false, directories: true, files: false }, function(err, dir) {
+//need to be able to store file structure as a global object
+var refreshListValues = function () {
+    listValues = [];
+    dive(process.cwd() + baseDir, { recursive: false, directories: true, files: false }, function(err, dir) {
           if (err) throw err;
-          childrenFolders.push(dir.split(baseDir)[1]);
-
-    });
-    resolve(console.log('asdf'));
-});
+          listValues.push(dir.split(baseDir)[1]);
+    }); 
 }
-    //
-var dp = divePromise();
-dp.catch(function(err){ return console.error('Error somewhere in promise',err); })
-  .then(function(msg) {
-        // ^^ 'msg' param is an array of returned values
-    console.log('sd'); // array of resolve(msg) from above..
-              // res.send(JSON.stringify(childrenFolders))
+refreshListValues(); //gets called when the app is loaded for the first time and any time a change to the file structure is changed
 
-  });
 
-    
+//returns an object that lists the file structure 
+expressapp.get('/list', function(req, res) { //returns a list of app pages
+    res.setHeader('Content-Type', 'application/json');
+    res.send({ 'files': listValues });
 })
 
 expressapp.post('/copy', function(req, res) {
@@ -60,6 +47,7 @@ expressapp.post('/copy', function(req, res) {
             // var list = stdout.split('\n');
             res.send('successful');
     });
+    refreshListValues(); 
 })
 
 //rename
@@ -72,6 +60,7 @@ expressapp.post('/rename', function(req, res) {
         function (error, stdout, stderr) {
             res.send('successful');
     });
+    refreshListValues(); 
 })
 
 //Sets up the listener for the express app
