@@ -19,29 +19,31 @@ expressapp.use('/mock', express.static(__dirname + '/mock-responses'));
 
 
 
+
 //Dynamic file system management
 expressapp.get('/list', function(req, res) { //returns a list of app pages
 res.setHeader('Content-Type', 'application/json');
 var baseDir = '/apps/';
-var childrenFolders = [];
+var childrenFolders = ['asdf'];
+res.send(JSON.stringify(childrenFolders))
 var divePromise = function() {
     return new Promise(function(resolve, reject) {
         dive(process.cwd() + baseDir, { recursive: false, directories: true, files: false }, function(err, dir) {
           if (err) throw err;
           childrenFolders.push(dir.split(baseDir)[1]);
-          console.log(childrenFolders);
 
     });
-    resolve(res.send(JSON.stringify(childrenFolders)));
+    resolve(console.log('asdf'));
 });
 }
-console.log(childrenFolders);
     //
 var dp = divePromise();
 dp.catch(function(err){ return console.error('Error somewhere in promise',err); })
   .then(function(msg) {
         // ^^ 'msg' param is an array of returned values
-    console.log(msg); // array of resolve(msg) from above..
+    console.log('sd'); // array of resolve(msg) from above..
+              // res.send(JSON.stringify(childrenFolders))
+
   });
 
     
