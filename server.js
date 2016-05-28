@@ -42,8 +42,10 @@ expressapp.get('/configs', function(req, res) {
     var dataObj = {}
     // loop over each of the apps/folders and do a readfile on each of them
     for (var i=0; i < listValues.length; i++) {
+        console.log(dataObj)
         var file = fs.readFileSync('apps/' + listValues[i] + '/config.json', 'utf8');
-]        dataObj[listValues[i]] = file;
+        var newKey = listValues[i];
+        dataObj[newKey] = JSON.parse(file);
     }
     res.send(dataObj);
 })
