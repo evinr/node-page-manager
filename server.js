@@ -36,6 +36,18 @@ expressapp.get('/list', function(req, res) { //returns a list of app pages
     res.send({ 'files': listValues });
 })
 
+//endpoint for serving up the configs
+expressapp.get('/configs', function(req, res) { 
+    res.setHeader('Content-Type', 'application/json');
+    var dataObj = {}
+    // loop over each of the apps/folders and do a readfile on each of them
+    for (var i=0; i < listValues.length; i++) {
+        var file = fs.readFileSync('apps/' + listValues[i] + '/config.json', 'utf8');
+]        dataObj[listValues[i]] = file;
+    }
+    res.send(dataObj);
+})
+
 expressapp.post('/copy', function(req, res) {
     //var arg = req.param('username'); //maps to the 'name' field on the input
     var target = req.param('fileName');//needs to be read via the req
