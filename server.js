@@ -30,19 +30,18 @@ var refreshListValues = function () {
 refreshListValues(); //gets called when the app is loaded for the first time and any time a change to the file structure is changed
 
 
-//returns an object that lists the file structure 
-expressapp.get('/list', function(req, res) { //returns a list of app pages
+//returns an object that lists the file structure, 
+expressapp.get('/list', function(req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.send({ 'files': listValues });
 })
 
-//endpoint for serving up the configs
-expressapp.get('/configs', function(req, res) { 
+//endpoint for serving up the data that is needed to render a full view 
+expressapp.get('/data', function(req, res) { 
     res.setHeader('Content-Type', 'application/json');
     var dataObj = {}
     // loop over each of the apps/folders and do a readfile on each of them
     for (var i=0; i < listValues.length; i++) {
-        console.log(dataObj)
         var file = fs.readFileSync('apps/' + listValues[i] + '/config.json', 'utf8');
         var newKey = listValues[i];
         dataObj[newKey] = JSON.parse(file);
@@ -50,6 +49,9 @@ expressapp.get('/configs', function(req, res) {
     res.send(dataObj);
 })
 
+
+////////////////////// MENU ENDPOINTS: These are used to manipulate the folders/files /////////////////////////////////////////
+// used for copying a folder
 expressapp.post('/copy', function(req, res) {
     //var arg = req.param('username'); //maps to the 'name' field on the input
     var target = req.param('fileName');//needs to be read via the req
@@ -64,7 +66,7 @@ expressapp.post('/copy', function(req, res) {
     refreshListValues(); 
 })
 
-//rename
+// used for renaming a folder
 expressapp.post('/rename', function(req, res) {
     //var arg = req.param('username'); //maps to the 'name' field on the input
     var target = req.param('filePath');//these values need to be from the req
@@ -75,6 +77,17 @@ expressapp.post('/rename', function(req, res) {
             res.send('successful');
     });
     refreshListValues(); 
+})
+
+// TODO: Add a way to edit anything: Folder name or config value
+expressapp.post('/edit', function(req, res) {
+    res.send('In progress...');
+})
+
+// TODO: Update API key
+// Pass the configs to another endpoint on a different server and recieve a new API key 
+expressapp.post('/update', function(req, res) {
+    res.send('In progress...');
 })
 
 //Sets up the listener for the express app
