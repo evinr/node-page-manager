@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Today's Holidays</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style type="text/css">
+/* Loading spinner */
+.loader {
+  font-size: 10px;
+  margin: 50px auto;
+  text-indent: -9999em;
+  width: 11em;
+  height: 11em;
+  border-radius: 50%;
+  background: #ffffff;
+  background: -moz-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+  background: -webkit-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+  background: -o-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+  background: -ms-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+  background: linear-gradient(to right, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+  position: relative;
+  -webkit-animation: load3 1.4s infinite linear;
+  animation: load3 1.4s infinite linear;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+}
+.loader:before {
+  width: 50%;
+  height: 50%;
+  background: #ffffff;
+  border-radius: 100% 0 0 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: '';
+}
+.loader:after {
+  background: rgba(189, 195, 199,1.0);
+  width: 75%;
+  height: 75%;
+  border-radius: 50%;
+  content: '';
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+@-webkit-keyframes load3 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes load3 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+.modalDialog {
+	opacity:0;
+	pointer-events: none;
+}
+
+</style>
+</head>
+<body>
+<div class="loader">Loading...</div>
+	<section class='container'>
+
+	</section>
+	<div class="modalDialog">
+		<div>
+			<a id="close" title="Close" class="close">X</a>
+			<form id='editor' onsubmit='return false';>
+				<h2>Holiday Data Editor</h2>
+				<p>Use the form below to update the information stored on the holiday.</p>
+				<fieldset class='material'>
+					<input type='text' id='holiday' required>
+					<hr>
+					<label>Holiday</label>
+				</fieldset>
+				<fieldset class='material'>
+					<input type='text' id='description' maxlength='240' required>
+					<hr>
+					<label>Description</label>
+				</fieldset>
+				<fieldset class='material'>
+					<input type='text' id='image' required>
+					<hr>
+					<label>Image</label>
+				</fieldset>
+				<div class="checkbox">
+					<label><input type='checkbox' id='conditional'><i class="helper"></i>Conditional Holiday?</label>
+				</div>
+				<div class="checkbox">
+					<label><input type='checkbox' id='fake'><i class="helper"></i>Fake Holiday?</label>
+				</div>
+
+				<input type='submit' class='form-button flat-button' value='Submit'>
+			</form>
+
+		</div>
+	</div>
+</body>
+
+<script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
+	 <script src='./resources/app.js'></script>
+    <link rel='stylesheet' type='text/css' href='./resources/style.css'>
+<script>
+
+</script>
+</html>
